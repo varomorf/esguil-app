@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Journal
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-sliding *ngFor='let entry of entries | async'>
+      <ion-item>
+        <ion-label>{{ entry.concept }}</ion-label>
+        <ion-label>{{ entry.amount | currency }}</ion-label>
+      </ion-item>
+      <ion-item-options>
+        <button ion-button danger (click)="removeTask( entry )">
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
