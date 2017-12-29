@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {JournalEntry} from "../../model/journalEntry";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'page-add-entry',
@@ -9,12 +10,18 @@ import {JournalEntry} from "../../model/journalEntry";
 })
 export class AddEntryPage {
 
+  private journalEntry: FormGroup;
   entriesRef: AngularFireList<JournalEntry>;
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
-              public db: AngularFireDatabase) {
+              public db: AngularFireDatabase,
+              public formBuilder: FormBuilder) {
     this.entriesRef = db.list('entries');
+    this.journalEntry = this.formBuilder.group({
+      amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
+      concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])]
+    });
   }
 
   createTask() {
@@ -54,6 +61,10 @@ export class AddEntryPage {
       ]
     });
     newEntryModal.present(newEntryModal);
+  }
+
+  createEntry() {
+    this.entriesRef.push(this.journalEntry.value);
   }
 
 }
