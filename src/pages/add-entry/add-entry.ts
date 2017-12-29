@@ -18,53 +18,37 @@ export class AddEntryPage {
               public db: AngularFireDatabase,
               public formBuilder: FormBuilder) {
     this.entriesRef = db.list('entries');
-    this.journalEntry = this.formBuilder.group({
-      amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
-      concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])]
-    });
+    this.initForm();
   }
 
-  createTask() {
-    let newEntryModal = this.alertCtrl.create({
-      title: 'New Entry',
-      message: "Enter a concept and amount for your new entry",
-      inputs: [
-        {
-          name: 'concept',
-          placeholder: 'Concept'
-        },
-        {
-          name: 'amount',
-          placeholder: 'Amount',
-          type: 'number'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            this.entriesRef.push({
-              date: new Date(),
-              concept: data.concept,
-              amount: data.amount,
-              payers: [],
-              targets: []
-            });
-          }
-        }
-      ]
+  initForm() {
+    this.journalEntry = this.formBuilder.group({
+      amount: ['0', Validators.compose([Validators.required, Validators.min(0.01)])],
+      concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])],
+      payers: ['']
     });
-    newEntryModal.present(newEntryModal);
   }
 
   createEntry() {
-    this.entriesRef.push(this.journalEntry.value);
+    this.entriesRef
+      .push(this.journalEntry.value)
+      .then(data => {
+        let newEntryModal = this.alertCtrl.create({
+          title: 'New Entry Added',
+          message: "The new entry has been added",
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                this.initForm();
+              }
+            }
+          ]
+        });
+        newEntryModal.present(newEntryModal);
+      });
+
+
   }
 
 }
