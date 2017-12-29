@@ -4,7 +4,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { JournalPage } from '../pages/journal/journal';
-import { ContactPage } from '../pages/contact/contact';
+import { MembersPage } from '../pages/members/members';
 import { AddEntryPage } from '../pages/add-entry/add-entry';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -27,7 +27,7 @@ const firebaseConfig = {
   declarations: [
     MyApp,
     JournalPage,
-    ContactPage,
+    MembersPage,
     AddEntryPage,
     TabsPage
   ],
@@ -41,7 +41,7 @@ const firebaseConfig = {
   entryComponents: [
     MyApp,
     JournalPage,
-    ContactPage,
+    MembersPage,
     AddEntryPage,
     TabsPage
   ],
