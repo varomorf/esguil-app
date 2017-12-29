@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
+import {Member} from "../../model/member";
+import {Observable} from "rxjs/Observable";
+import {MemberService} from "../../app/members/member.service";
 
 @Component({
   selector: 'members',
@@ -7,8 +10,11 @@ import { NavController } from 'ionic-angular';
 })
 export class MembersPage {
 
-  constructor(public navCtrl: NavController) {
+  members: Observable<Member[]>;
 
+  constructor(public navCtrl: NavController,
+              private memberService: MemberService) {
+    this.members = this.memberService.members;
   }
 
 }

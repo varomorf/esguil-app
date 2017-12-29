@@ -13,6 +13,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import {MemberService} from "./members/member.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -48,6 +49,7 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    MemberService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
