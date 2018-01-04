@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Add Entry</ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="createTask()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -23,7 +18,9 @@
       </ion-item>
       <ion-item>
         <ion-label>Payer/s</ion-label>
-        <ion-select formControlName="payers"></ion-select>
+        <ion-select formControlName="payers" multiple="true">
+          <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
+        </ion-select>
       </ion-item>
       <button ion-button type="submit" [disabled]="!journalEntry.valid">Submit</button>
     </ion-list>
