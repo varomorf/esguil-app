@@ -31,7 +31,9 @@ export class AddEntryPage {
     this.journalEntry = this.formBuilder.group({
       amount: ['0', Validators.compose([Validators.required, Validators.min(0.01)])],
       concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])],
-      payers: ['', Validators.required]
+      payers: ['', Validators.required],
+      commonExpense: ['true', Validators.required],
+      targets: ['', Validators.required]
     });
   }
 

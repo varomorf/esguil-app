@@ -22,6 +22,16 @@
           <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
         </ion-select>
       </ion-item>
+      <ion-item>
+        <ion-label>Common-expense</ion-label>
+        <ion-checkbox id="commonExpense" formControlName="commonExpense"></ion-checkbox>
+      </ion-item>
+      <ion-item *ngIf="!journalEntry.value.commonExpense">
+        <ion-label>Target/s</ion-label>
+        <ion-select formControlName="targets" multiple="true">
+          <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
+        </ion-select>
+      </ion-item>
       <button ion-button type="submit" [disabled]="!journalEntry.valid">Submit</button>
     </ion-list>
   </form>
