@@ -6,6 +6,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MemberService} from "../../app/members/member.service";
 import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
+import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
 
 @Component({
   selector: 'page-add-entry',
@@ -14,8 +15,9 @@ import {Observable} from "rxjs/Observable";
 export class AddEntryPage {
 
   private journalEntry: FormGroup;
+  private targetsGroup: FormGroup;
   private entriesRef: AngularFireList<JournalEntry>;
-  private members : Observable<Member[]>;
+  private members: Observable<Member[]>;
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
@@ -32,9 +34,12 @@ export class AddEntryPage {
       amount: ['0', Validators.compose([Validators.required, Validators.min(0.01)])],
       concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])],
       payers: ['', Validators.required],
-      commonExpense: ['true', Validators.required],
-      targets: ['', Validators.required]
+      commonExpense: ['true', Validators.nullValidator],
+      targets: ['', Validators.nullValidator]
     });
+    this.journalEntry.validator = (formGroup: FormGroup) => {
+      return NewEntryTargetsValidator.validEntryTargets(formGroup);
+    };
   }
 
   createEntry() {
