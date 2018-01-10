@@ -13,7 +13,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import {AngularFireAuthModule} from "angularfire2/auth";
 import {MemberService} from "./members/member.service";
+import {CurrentUserProvider} from "../providers/users/CurrentUserProvider";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -36,7 +38,8 @@ const firebaseConfig = {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,6 +53,7 @@ const firebaseConfig = {
     StatusBar,
     SplashScreen,
     MemberService,
+    CurrentUserProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
