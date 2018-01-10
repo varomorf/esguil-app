@@ -7,6 +7,7 @@ import {MemberService} from "../../app/members/member.service";
 import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
 import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
+import {CurrentUserProvider} from "../../providers/users/CurrentUserProvider";
 
 @Component({
   selector: 'page-add-entry',
@@ -15,18 +16,21 @@ import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryVal
 export class AddEntryPage {
 
   private journalEntry: FormGroup;
-  private targetsGroup: FormGroup;
   private entriesRef: AngularFireList<JournalEntry>;
   private members: Observable<Member[]>;
+  private allMemberIds: Set<string> = new Set<string>();
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               public db: AngularFireDatabase,
               public formBuilder: FormBuilder,
-              private memberService: MemberService) {
+              private memberService: MemberService,
+              private currentUserProvider: CurrentUserProvider) {
+
     this.entriesRef = db.list('entries');
     this.initForm();
     this.members = this.memberService.members;
+    this.members.subscribe(data => data.forEach(m => this.allMemberIds.add(m.$key)));
   }
 
   initForm() {
@@ -45,6 +49,10 @@ export class AddEntryPage {
   createEntry() {
     let entry = new JournalEntry();
     Object.assign(entry, this.journalEntry.value);
+    entry.groupId = this.currentUserProvider.currentUser.groupId;
+    if (this.journalEntry.value.commonExpense){
+      entry.targets = Array.from(this.allMemberIds);
+    }
 
     this.entriesRef
       .push(entry)

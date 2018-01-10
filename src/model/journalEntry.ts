@@ -1,4 +1,5 @@
 export class JournalEntry {
+  groupId: string;
   date: Date;
   concept: string;
   amount: number;
