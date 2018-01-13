@@ -7,8 +7,12 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list class="entriesList">
-    <ion-item-sliding *ngFor='let entry of entries | async'>
+  <ion-item-group class="entriesList" *ngFor="let group of groupedEntries">
+    <ion-item-divider>
+      <ion-label>{{group.key}}</ion-label>
+      <ion-label>100.00€</ion-label>
+    </ion-item-divider>
+    <ion-item-sliding *ngFor='let entry of group.entries'>
       <ion-item>
         <ion-label class="date">{{ entry.date | date: 'dd' }}</ion-label>
         <ion-label class="concept">{{ entry.concept }}</ion-label>
@@ -20,5 +24,5 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
-  </ion-list>
+  </ion-item-group>
 </ion-content>
