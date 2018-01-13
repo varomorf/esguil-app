@@ -8,6 +8,7 @@ import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
 import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
 import {CurrentUserProvider} from "../../providers/users/CurrentUserProvider";
+import {EntryProvider} from "../../providers/entries/EntryProvider";
 
 @Component({
   selector: 'page-add-entry',
@@ -25,7 +26,8 @@ export class AddEntryPage {
               public db: AngularFireDatabase,
               public formBuilder: FormBuilder,
               private memberService: MemberService,
-              private currentUserProvider: CurrentUserProvider) {
+              private currentUserProvider: CurrentUserProvider,
+              private entryProvider: EntryProvider) {
 
     this.entriesRef = db.list('entries');
     this.initForm();
@@ -50,22 +52,19 @@ export class AddEntryPage {
     let entry = new JournalEntry();
     Object.assign(entry, this.journalEntry.value);
     entry.groupId = this.currentUserProvider.currentUser.groupId;
-    if (this.journalEntry.value.commonExpense){
+    if (this.journalEntry.value.commonExpense) {
       entry.targets = Array.from(this.allMemberIds);
     }
 
-    this.entriesRef
-      .push(entry)
-      .then(data => {
+    this.entryProvider.create(entry)
+      .then(() => {
         let newEntryModal = this.alertCtrl.create({
           title: 'New Entry Added',
           message: "The new entry has been added",
           buttons: [
             {
               text: 'OK',
-              handler: () => {
-                this.initForm();
-              }
+              handler: () => this.initForm()
             }
           ]
         });
