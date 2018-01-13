@@ -1,19 +1,21 @@
 ///<reference path="../../../node_modules/angularfire2/database/interfaces.d.ts"/>
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
-import {AngularFireAuth} from "angularfire2/auth";
 import {JournalEntry} from "../../model/journalEntry";
 import * as firebase from "firebase";
+import {CurrentUserProvider} from "../users/CurrentUserProvider";
 import ThenableReference = firebase.database.ThenableReference;
 
 @Injectable()
 export class EntryProvider {
 
-  private entriesRef: AngularFireList<JournalEntry>;
+  public entriesRef: AngularFireList<JournalEntry>;
 
   constructor(private db: AngularFireDatabase,
-              private auth: AngularFireAuth) {
-    this.entriesRef = db.list('entries');
+              private currentUser: CurrentUserProvider) {
+    this.currentUser.currentUserObservable.subscribe(currentUser =>
+      this.entriesRef = db.list('entries', ref => ref.orderByChild('groupId').equalTo(currentUser.groupId))
+    );
   }
 
   create(entry: JournalEntry): ThenableReference {
