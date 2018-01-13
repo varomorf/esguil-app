@@ -14,8 +14,6 @@ export class CurrentUserProvider {
 
     this.fireAuth.auth.signInWithEmailAndPassword("varomorf@gmail.com", "123456")
       .then(user => {
-        console.log(user);
-
         let currentUserUID = user.uid;
 
         this.currentUserRef = this.db.object<Member>('/members/' + currentUserUID);
