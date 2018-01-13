@@ -19,4 +19,8 @@ export class JournalPage {
     this.entries = this.entriesRef.valueChanges();
   }
 
+  removeEntry(){
+
+  }
+
 }
