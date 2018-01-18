@@ -1,18 +1,41 @@
 page-journal {
   .entriesList {
 
-    .date {
-      flex: 1
-    }
+	ion-item-divider {
+	  background-color: #7CFC00;
 
-    .concept {
-      flex: 7;
-    }
+	  div {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 
-    .amount {
-      flex: 2;
-      text-align: right;
-    }
+		span {
+		  color: #2e343b;
+
+		  font-size: 16px;
+		  font-weight: 800;
+		}
+
+		.total-amount {
+		  margin-right: 7px;
+		}
+	  }
+	}
+
+	font-size: 14px;
+
+	.date {
+	  flex: 1
+	}
+
+	.concept {
+	  flex: 7;
+	}
+
+	.amount {
+	  flex: 2;
+	  text-align: right;
+	}
 
   }
 }

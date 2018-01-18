@@ -5,49 +5,59 @@ import {EntryProvider} from "../../providers/entries/EntryProvider";
 import * as moment from "moment";
 
 @Component({
-  selector: 'page-journal',
-  templateUrl: 'journal.html'
+	selector: 'page-journal',
+	templateUrl: 'journal.html'
 })
 export class JournalPage {
-  groupedEntries: Array<GroupedEntries> = [];
+	groupedEntries: Array<GroupedEntries> = [];
 
-  constructor(public navCtrl: NavController,
-              private entryProvider: EntryProvider) {
-  }
+	constructor(public navCtrl: NavController,
+				private entryProvider: EntryProvider) {
+	}
 
-  ionViewDidLoad() {
-	  this.entryProvider.entriesRef.valueChanges()
-		  .subscribe(entries => {
-			  console.log(entries);
+	ionViewDidLoad() {
+		this.entryProvider.entriesRef.valueChanges()
+			.subscribe(entries => {
+				console.log(entries);
 
-			  entries.forEach(entry => {
-				  let key = moment(entry.date).format("MM/YYYY");
+				entries.forEach(e => {
+					let entry = JournalEntry.fromObject(e);
 
-				  let i = this.groupedEntries.findIndex(g => g.key === key);
-				  let grouped: GroupedEntries;
-				  if (i === -1) {
-					  grouped = new GroupedEntries();
-					  grouped.key = key;
+					let key = moment(entry.date).format("MM/YYYY");
 
-					  this.groupedEntries.push(grouped);
-				  } else {
-					  grouped = this.groupedEntries[i];
-				  }
+					let i = this.groupedEntries.findIndex(g => g.key === key);
+					let grouped: GroupedEntries;
+					if (i === -1) {
+						grouped = new GroupedEntries();
+						grouped.key = key;
 
-				  grouped.entries.push(entry);
-			  });
-		  });
-  }
+						this.groupedEntries.push(grouped);
+					} else {
+						grouped = this.groupedEntries[i];
+					}
 
-  removeEntry() {
+					grouped.addEntry(entry);
+				});
+			});
+	}
 
-  }
+	removeEntry() {
+
+	}
 
 
 }
 
 class GroupedEntries {
-  key: string;
-  year: string;
-  entries: Array<JournalEntry> = [];
+	key: string;
+	total: number = 0;
+
+	entries: Array<JournalEntry> = [];
+
+	addEntry(entry: JournalEntry) {
+		this.total += entry.amount;
+
+		this.entries.push(entry);
+	}
+
 }

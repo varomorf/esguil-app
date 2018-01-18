@@ -9,14 +9,16 @@
 <ion-content padding>
   <ion-item-group class="entriesList" *ngFor="let group of groupedEntries">
     <ion-item-divider>
-      <ion-label>{{group.key}}</ion-label>
-      <ion-label>100.00€</ion-label>
+		<div>
+		  <span>{{group.key}}</span>
+		  <span class="total-amount">{{group.total | currency:'€':'symbol':'1.2-2':'es'}}</span>
+		</div>
     </ion-item-divider>
     <ion-item-sliding *ngFor='let entry of group.entries'>
       <ion-item>
         <ion-label class="date">{{ entry.date | date: 'dd' }}</ion-label>
         <ion-label class="concept">{{ entry.concept }}</ion-label>
-        <ion-label class="amount">{{ entry.amount | currency: '€' }}</ion-label>
+        <ion-label class="amount">{{ entry.amount | currency:'€':'symbol':'1.2-2':'es' }}</ion-label>
       </ion-item>
       <ion-item-options>
         <button ion-button danger (click)="removeTask( entry )">
