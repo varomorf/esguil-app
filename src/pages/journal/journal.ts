@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {JournalEntry} from "../../model/journalEntry";
+import {GroupedEntries, JournalEntry} from "../../model/journalEntry";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import * as moment from "moment";
 
@@ -39,22 +39,6 @@ export class JournalPage {
 					grouped.addEntry(entry);
 				});
 			});
-	}
-
-}
-
-class GroupedEntries {
-	key: string;
-	total: number = 0;
-
-	showEntries: boolean = false;
-
-	entries: Array<JournalEntry> = [];
-
-	addEntry(entry: JournalEntry) {
-		this.total += entry.amount;
-
-		this.entries.push(entry);
 	}
 
 }

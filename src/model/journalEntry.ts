@@ -26,3 +26,19 @@ export class JournalEntry {
 	}
 
 }
+
+export class GroupedEntries {
+	key: string;
+	total: number = 0;
+
+	showEntries: boolean = false;
+
+	entries: Array<JournalEntry> = [];
+
+	addEntry(entry: JournalEntry) {
+		this.total += entry.amount;
+
+		this.entries.push(entry);
+	}
+
+}
