@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {EntryProvider} from "../../providers/entries/EntryProvider";
+import {GroupedEntries} from "../../model/journalEntry";
 
 /**
  * Generated class for the TotalsPage page.
@@ -10,17 +12,26 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-totals',
-  templateUrl: 'totals.html',
+	selector: 'page-totals',
+	templateUrl: 'totals.html',
 })
 export class TotalsPage {
 
-  constructor(public navCtrl: NavController,
-			  public navParams: NavParams) {
-  }
+	private groupedEntries: GroupedEntries[] = [];
+	private dates: string[] = [];
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TotalsPage');
-  }
+	constructor(public navCtrl: NavController,
+				public navParams: NavParams,
+				private entryProvider: EntryProvider) {
+	}
+
+	ionViewDidLoad() {
+		this.entryProvider.getGroupedEntries().subscribe(ges => {
+			this.groupedEntries = ges;
+
+			this.dates = [];
+			ges.forEach(ge => this.dates.push(ge.key));
+		});
+	}
 
 }
