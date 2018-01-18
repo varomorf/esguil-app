@@ -8,13 +8,13 @@
 
 <ion-content padding>
   <ion-item-group class="entriesList" *ngFor="let group of groupedEntries">
-    <ion-item-divider>
+    <ion-item-divider (click)="group.showEntries = !group.showEntries">
 		<div>
 		  <span>{{group.key}}</span>
 		  <span class="total-amount">{{group.total | currency:'€':'symbol':'1.2-2':'es'}}</span>
 		</div>
     </ion-item-divider>
-    <ion-item-sliding *ngFor='let entry of group.entries'>
+    <ion-item-sliding [hidden]="!group.showEntries" *ngFor='let entry of group.entries'>
       <ion-item>
         <ion-label class="date">{{ entry.date | date: 'dd' }}</ion-label>
         <ion-label class="concept">{{ entry.concept }}</ion-label>

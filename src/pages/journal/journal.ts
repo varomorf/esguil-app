@@ -41,16 +41,13 @@ export class JournalPage {
 			});
 	}
 
-	removeEntry() {
-
-	}
-
-
 }
 
 class GroupedEntries {
 	key: string;
 	total: number = 0;
+
+	showEntries: boolean = false;
 
 	entries: Array<JournalEntry> = [];
 
