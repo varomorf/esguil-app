@@ -1,12 +1,14 @@
 import * as moment from 'moment';
+import {Member} from "./member";
 
 export class JournalEntry {
 	groupId: string;
 	date: Date;
 	concept: string;
 	amount: number;
-	payers: string[];
-	targets: string[];
+	commonExpense: boolean;
+	payers: Member[];
+	targets: Member[];
 
 	constructor() {
 		this.date = new Date();

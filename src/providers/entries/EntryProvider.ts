@@ -2,31 +2,47 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {GroupedEntries, JournalEntry} from "../../model/journalEntry";
-import * as firebase from "firebase";
-import {CurrentUserProvider} from "../users/CurrentUserProvider";
+import {CurrentUserProvider, SIGNED_IN_USER} from "../users/CurrentUserProvider";
 import * as moment from "moment";
 import {Observable} from "rxjs/Observable";
-import ThenableReference = firebase.database.ThenableReference;
+import {MemberProvider} from "../members/MemberProvider";
+import {Events} from "ionic-angular";
+import {Member} from "../../model/member";
 
 @Injectable()
 export class EntryProvider {
 
 	public entriesRef: AngularFireList<JournalEntry>;
+	public currentUser: Member;
 
 	constructor(private db: AngularFireDatabase,
-				private currentUser: CurrentUserProvider) {
-		this.currentUser.currentUserObservable.subscribe(currentUser =>
+				private currentUserProvider: CurrentUserProvider,
+				private memberProvider: MemberProvider,
+				private events: Events) {
+		this.events.subscribe(SIGNED_IN_USER, (currentUser) => {
+			this.currentUser = currentUser;
 			this.entriesRef = db.list('entries', ref => ref.orderByChild('groupId').equalTo(currentUser.groupId))
-		);
+		});
 	}
 
-	create(entry: JournalEntry): ThenableReference {
-		let entryData = {};
-		Object.assign(entryData, entry);
+	create(entry: JournalEntry): Promise<any> {
+		return new Promise<any>(resolve => {
+			entry.groupId = this.currentUser.groupId;
+			entry.date = new Date();
 
-		entryData['date'] = entry.date.toISOString();
+			this.memberProvider.getMembers().toPromise().then(members => console.log(members));
 
-		return this.entriesRef.push(entryData as JournalEntry);
+			// if it's a common expense, the targets are all of the group's members
+			if (entry.commonExpense) {
+				this.memberProvider.getMembers().subscribe(members => {
+					entry.targets = members;
+
+					this.saveEntry(entry).then(resolve);
+				});
+			} else {
+				this.saveEntry(entry).then(resolve);
+			}
+		});
 	}
 
 	getGroupedEntries(): Observable<GroupedEntries[]> {
@@ -57,6 +73,21 @@ export class EntryProvider {
 
 				return groupedEntries;
 			});
+	}
+
+	private saveEntry(entry: JournalEntry): Promise<any> {
+		return new Promise<any>(resolve => {
+			let entryData: any = {};
+			Object.assign(entryData, entry);
+
+			// convert date before saving (firebase can only use strings)
+			entryData.date = entry.date.toISOString();
+
+			// extract target IDs
+			entryData.targets = entryData.targets.map(m => m.$key);
+
+			this.entriesRef.push(entryData as JournalEntry).then(resolve);
+		});
 	}
 
 }

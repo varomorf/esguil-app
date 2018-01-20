@@ -1,14 +1,15 @@
 import {Component} from '@angular/core';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, Events, NavController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
 import {JournalEntry} from "../../model/journalEntry";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MemberService} from "../../app/members/member.service";
+import {MemberProvider} from "../../providers/members/MemberProvider";
 import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
 import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
-import {CurrentUserProvider} from "../../providers/users/CurrentUserProvider";
+import {CurrentUserProvider, SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
+import {noop} from "rxjs/util/noop";
 
 @Component({
   selector: 'page-add-entry',
@@ -19,20 +20,20 @@ export class AddEntryPage {
   private journalEntry: FormGroup;
   private entriesRef: AngularFireList<JournalEntry>;
   private members: Observable<Member[]>;
-  private allMemberIds: Set<string> = new Set<string>();
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               public db: AngularFireDatabase,
               public formBuilder: FormBuilder,
-              private memberService: MemberService,
-              private currentUserProvider: CurrentUserProvider,
-              private entryProvider: EntryProvider) {
+              private memberService: MemberProvider,
+              private entryProvider: EntryProvider,
+			  private events: Events) {
 
     this.entriesRef = db.list('entries');
     this.initForm();
-    this.members = this.memberService.members;
-    this.members.subscribe(data => data.forEach(m => this.allMemberIds.add(m.$key)));
+	  this.events.subscribe(SIGNED_IN_USER, () => {
+    	this.members = this.memberService.getMembers();
+	  });
   }
 
   initForm() {
@@ -51,12 +52,8 @@ export class AddEntryPage {
   createEntry() {
     let entry = new JournalEntry();
     Object.assign(entry, this.journalEntry.value);
-    entry.groupId = this.currentUserProvider.currentUser.groupId;
-    if (this.journalEntry.value.commonExpense) {
-      entry.targets = Array.from(this.allMemberIds);
-    }
 
-    this.entryProvider.create(entry)
+    this.entryProvider.create(this.journalEntry.value as JournalEntry)
       .then(() => {
         let newEntryModal = this.alertCtrl.create({
           title: 'New Entry Added',
@@ -68,7 +65,7 @@ export class AddEntryPage {
             }
           ]
         });
-        newEntryModal.present(newEntryModal);
+        newEntryModal.present(newEntryModal).then(noop);
       });
 
 

@@ -2,19 +2,19 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
-import {MemberService} from "../../app/members/member.service";
+import {MemberProvider} from "../../providers/members/MemberProvider";
 
 @Component({
-  selector: 'members',
-  templateUrl: 'members.html'
+	selector: 'members',
+	templateUrl: 'members.html'
 })
 export class MembersPage {
 
-  members: Observable<Member[]>;
+	private members: Observable<Member[]>;
 
-  constructor(public navCtrl: NavController,
-              private memberService: MemberService) {
-    this.members = this.memberService.members;
-  }
+	constructor(public navCtrl: NavController,
+				private memberService: MemberProvider) {
+		this.members = this.memberService.getMembers();
+	}
 
 }

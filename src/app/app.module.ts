@@ -14,7 +14,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireDatabaseModule} from 'angularfire2/database';
 import {AngularFireAuthModule} from "angularfire2/auth";
-import {MemberService} from "./members/member.service";
+import {MemberProvider} from "../providers/members/MemberProvider";
 import {CurrentUserProvider} from "../providers/users/CurrentUserProvider";
 import {EntryProvider} from "../providers/entries/EntryProvider";
 import {registerLocaleData} from "@angular/common";
@@ -58,7 +58,7 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    MemberService,
+    MemberProvider,
     CurrentUserProvider,
     EntryProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

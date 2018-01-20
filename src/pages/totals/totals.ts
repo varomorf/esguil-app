@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {GroupedEntries} from "../../model/journalEntry";
 
@@ -10,7 +10,6 @@ import {GroupedEntries} from "../../model/journalEntry";
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
 	selector: 'page-totals',
 	templateUrl: 'totals.html',
