@@ -16,9 +16,11 @@
     </ion-item-divider>
     <ion-item-sliding [hidden]="!group.showEntries" *ngFor='let entry of group.entries'>
       <ion-item>
-        <ion-label class="date">{{ entry.date | date: 'dd' }}</ion-label>
+        <ion-label class="date">{{ entry.payers[0].name }}</ion-label>
         <ion-label class="concept">{{ entry.concept }}</ion-label>
         <ion-label class="amount">{{ entry.amount | currency:'€':'symbol':'1.2-2':'es' }}</ion-label>
+        <ion-icon item-right *ngIf="entry.commonExpense" name="people"></ion-icon>
+        <ion-icon item-right *ngIf="!entry.commonExpense" name="person"></ion-icon>
       </ion-item>
       <ion-item-options>
         <button ion-button danger (click)="removeTask( entry )">

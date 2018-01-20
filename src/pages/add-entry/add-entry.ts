@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {AlertController, Events, NavController} from 'ionic-angular';
 import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
-import {JournalEntry} from "../../model/journalEntry";
+import {FBJournalEntry, JournalEntry} from "../../model/journalEntry";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MemberProvider} from "../../providers/members/MemberProvider";
 import {Member} from "../../model/member";
 import {Observable} from "rxjs/Observable";
 import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
-import {CurrentUserProvider, SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
+import {SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {noop} from "rxjs/util/noop";
 
@@ -41,7 +41,7 @@ export class AddEntryPage {
       amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
       concept: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z ]*')])],
       payers: ['', Validators.required],
-      commonExpense: ['true', Validators.nullValidator],
+      commonExpense: [true, Validators.nullValidator],
       targets: ['', Validators.nullValidator]
     });
     this.journalEntry.validator = (formGroup: FormGroup) => {
@@ -50,10 +50,7 @@ export class AddEntryPage {
   }
 
   createEntry() {
-    let entry = new JournalEntry();
-    Object.assign(entry, this.journalEntry.value);
-
-    this.entryProvider.create(this.journalEntry.value as JournalEntry)
+    this.entryProvider.create(FBJournalEntry.fromObject(this.journalEntry.value))
       .then(() => {
         let newEntryModal = this.alertCtrl.create({
           title: 'New Entry Added',
