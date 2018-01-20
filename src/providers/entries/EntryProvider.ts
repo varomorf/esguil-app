@@ -39,7 +39,7 @@ export class EntryProvider {
 				entries.forEach(e => {
 					let entry = JournalEntry.fromObject(e);
 
-					let key = moment(entry.date).format("MM/YYYY");
+					let key = moment(entry.date).format("MMMM YYYY");
 
 					let i = groupedEntries.findIndex(g => g.key === key);
 					let grouped: GroupedEntries;
