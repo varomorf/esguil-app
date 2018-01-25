@@ -104,4 +104,25 @@ $shell: #f8eee7;
   ion-content {
 	background-color: $sand;
   }
+
+  .tabs {
+	.tabbar {
+	  background-color: $grape;
+	  color: $shell;
+
+	  .tab-button {
+		color: inherit;
+
+		&[aria-selected=true] {
+		  .tab-button-icon {
+			color: $eggplant;
+		  }
+		}
+
+		.tab-button-icon {
+		  color: inherit;
+		}
+	  }
+	}
+  }
 }
