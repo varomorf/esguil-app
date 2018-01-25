@@ -1,3 +1,5 @@
+@import "../../theme/variables";
+
 .md, .ios {
   page-journal {
 
@@ -6,6 +8,8 @@
 	  ion-item-divider {
 		background-color: $eggplant;
 		color: $shell;
+
+		border-radius: 5px;
 
 		div {
 		  display: flex;
@@ -23,21 +27,33 @@
 		}
 	  }
 
-	  ion-item {
+	  ion-item-sliding {
 
-		font-size: 14px;
-
-		.date {
-		  flex: 2
+		&:first-of-type {
+		  border-radius: 5px 5px 0 0;
 		}
 
-		.concept {
-		  flex: 7;
+		&:last-of-type {
+		  border-radius: 0 0 5px 5px;
 		}
 
-		.amount {
-		  flex: 3;
-		  text-align: right;
+		ion-item {
+
+		  font-size: 14px;
+
+		  .date {
+			flex: 2
+		  }
+
+		  .concept {
+			flex: 7;
+		  }
+
+		  .amount {
+			flex: 3;
+			text-align: right;
+		  }
+
 		}
 
 	  }
