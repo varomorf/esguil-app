@@ -1,41 +1,47 @@
-page-journal {
-  .entriesList {
+.md, .ios {
+  page-journal {
 
-	ion-item-divider {
-	  background-color: #7CFC00;
+	ion-item-group.entriesList {
 
-	  div {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+	  ion-item-divider {
+		background-color: $eggplant;
+		color: $shell;
 
-		span {
-		  color: #2e343b;
+		div {
+		  display: flex;
+		  align-items: center;
+		  justify-content: space-between;
 
-		  font-size: 16px;
-		  font-weight: 800;
-		}
+		  span {
+			font-size: 16px;
+			font-weight: 800;
+		  }
 
-		.total-amount {
-		  margin-right: 7px;
+		  .total-amount {
+			margin-right: 7px;
+		  }
 		}
 	  }
+
+	  ion-item {
+
+		font-size: 14px;
+
+		.date {
+		  flex: 2
+		}
+
+		.concept {
+		  flex: 7;
+		}
+
+		.amount {
+		  flex: 3;
+		  text-align: right;
+		}
+
+	  }
+
 	}
-
-	font-size: 14px;
-
-	.date {
-	  flex: 2
-	}
-
-	.concept {
-	  flex: 7;
-	}
-
-	.amount {
-	  flex: 3;
-	  text-align: right;
-	}
-
   }
 }

@@ -86,3 +86,22 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+$grape: #94618e;
+$eggplant: #49274a;
+$sand: #f4decb;
+$shell: #f8eee7;
+
+.md, .ios {
+  ion-navbar {
+	div {
+	  background-color: $grape;
+	  color: $shell;
+	}
+  }
+
+  ion-content {
+	background-color: $sand;
+  }
+}
