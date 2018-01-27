@@ -20,6 +20,7 @@ import {EntryProvider} from "../providers/entries/EntryProvider";
 import {registerLocaleData} from "@angular/common";
 import localeEs from '@angular/common/locales/es'
 import {TotalsPage} from "../pages/totals/totals";
+import {AbsPipe} from "../pipes/abs/abs";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -37,7 +38,8 @@ const firebaseConfig = {
     MembersPage,
     AddEntryPage,
     TabsPage,
-	TotalsPage
+	TotalsPage,
+	AbsPipe
   ],
   imports: [
     BrowserModule,
