@@ -18,13 +18,13 @@ import {AbsPipe} from "../../pipes/abs/abs";
 })
 export class TotalsPage {
 
-	private groupedEntries: GroupedEntries[] = [];
-
 	private selectedGroup: GroupedEntries;
+
+	groupedEntries: GroupedEntries[] = [];
 
 	totalPaid: any[];
 	totalSpent: any[];
-	private totalDiffs: any[];
+	totalDiffs: any[];
 
 	constructor(public navCtrl: NavController,
 				public navParams: NavParams,
@@ -32,7 +32,7 @@ export class TotalsPage {
 				private memberProvider: MemberProvider) {
 	}
 
-	ionViewDidLoad() {
+	ionViewWillEnter() {
 		this.entryProvider.getGroupedEntries().subscribe(ges => {
 			this.groupedEntries = ges;
 
@@ -46,44 +46,46 @@ export class TotalsPage {
 
 		this.memberProvider.getMembers().subscribe(members => {
 			let membersTotalPayed = new Map<string, number>();
-			members.forEach(m => membersTotalPayed.set(m.$key, 0));
-
 			let membersTotalSpent = new Map<string, number>();
-			members.forEach(m => membersTotalSpent.set(m.$key, 0));
 
-			this.selectedGroup.entries.forEach(e => {
-				let numOfPayers = e.payers.length;
-				let payingRatio = 1 / numOfPayers;
+			// prepare computational maps for totals
+			members.forEach(m => {
+				membersTotalPayed.set(m.$key, 0);
+				membersTotalSpent.set(m.$key, 0)
+			});
 
-				e.payers.forEach(p => {
-					let currentMemberAmount = membersTotalPayed.get(p.$key);
+			// process each entry of the selected group
+			this.selectedGroup.entries.forEach(entry => {
+				// add payment for each payer
+				let numOfPayers = entry.payers.length;
+				entry.payers.forEach(p => {
+					let currentAmount = membersTotalPayed.get(p.$key);
 
-					membersTotalPayed.set(p.$key, currentMemberAmount + (e.amount * payingRatio));
+					membersTotalPayed.set(p.$key, currentAmount + (entry.amount * (1 / numOfPayers)));
 				});
 
-				let numOfTargets = e.targets.length;
-				let targetRatio = 1 / numOfTargets;
+				// add amount spent per each target
+				let numOfTargets = entry.targets.length;
+				entry.targets.forEach(t => {
+					let currentAmount = membersTotalSpent.get(t.$key);
 
-				e.targets.forEach(t => {
-					let currentMemberAmount = membersTotalSpent.get(t.$key);
-
-					membersTotalSpent.set(t.$key, currentMemberAmount + (e.amount * targetRatio));
+					membersTotalSpent.set(t.$key, currentAmount + (entry.amount * (1 / numOfTargets)));
 				})
 			});
 
-			console.log(membersTotalPayed);
-			console.log(membersTotalSpent);
-
+			// prepare total payments array
 			this.totalPaid = Array.from(membersTotalPayed.entries(), e => ({
 				member: members.find(m => m.$key === e[0]),
 				totalAmount: e[1]
 			}));
 
+			// prepare total spent array
 			this.totalSpent = Array.from(membersTotalSpent.entries(), e => ({
 				member: members.find(m => m.$key === e[0]),
 				totalAmount: e[1]
 			}));
 
+			// prepare total diffs array
 			this.totalDiffs = members.map(m => {
 				let memberPayment = this.totalPaid.find(p => p.member.$key === m.$key);
 				let memberSpent = this.totalSpent.find(s => s.member.$key === m.$key);
