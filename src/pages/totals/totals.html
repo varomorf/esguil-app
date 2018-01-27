@@ -1,18 +1,46 @@
-<!--
-  Generated template for the TotalsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Totals</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>Totals</ion-title>
+	</ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+	<div class="month-selector">
+		<ion-select right [ngModel]="selectedGroup" (ionChange)="monthChanged()">
+			<ion-option *ngFor="let group of groupedEntries" [value]="group">{{group.key}}</ion-option>
+		</ion-select>
+	</div>
+	<div>
+		<h1>Monthly result</h1>
+		<ul>
+			<li *ngFor="let memberDiff of totalDiffs">
+				<span class="member-total-name">{{memberDiff.member.name}}</span>
+				<span *ngIf="memberDiff.totalAmount >= 0" class="member-action">must receive</span>
+				<span *ngIf="memberDiff.totalAmount < 0" class="member-action">must pay</span>
+				<span class="member-total-amount">{{memberDiff.totalAmount | abs | currency:'€':'symbol':'1.2-2':'es' }}</span>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h1>Total paid per member</h1>
+		<ul>
+			<li *ngFor="let memberPaid of totalPaid">
+				<span class="member-total-name">{{memberPaid.member.name}}</span>
+				<span class="member-total-amount">{{memberPaid.totalAmount | currency:'€':'symbol':'1.2-2':'es' }}</span>
+			</li>
+		</ul>
+	</div>
+	<div>
+		<h1>Total spent per member</h1>
+		<ul>
+			<li *ngFor="let memberSpent of totalSpent">
+				<span class="member-total-name">{{memberSpent.member.name}}</span>
+				<span class="member-total-amount">{{memberSpent.totalAmount | currency:'€':'symbol':'1.2-2':'es' }}</span>
+			</li>
+		</ul>
+	</div>
 
 </ion-content>
