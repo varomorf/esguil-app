@@ -29,9 +29,46 @@
 
 			margin-right: 10px;
 		  }
+
+		  .item-cover {
+			height: inherit;
+			width: inherit;
+		  }
 		}
 
 	  }
+
+	  .result-cards {
+
+		.total-card {
+		  background-color: white;
+
+		  border-radius: 20px;
+
+		  padding: 20px;
+		  margin-top: 20px;
+
+		  h1 {
+			text-align: center;
+
+			color: $eggplant;
+
+			font-size: 1.5em;
+		  }
+
+		  span {
+			font-size: 1.2em;
+		  }
+
+		  .member-total-name, .member-action {
+			color: $eggplant;
+			font-weight: 500;
+		  }
+
+		}
+
+	  }
+
 	}
   }
 }
