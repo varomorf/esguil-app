@@ -65,7 +65,9 @@ export class EntryProvider {
 					grouped.addEntry(entry);
 				});
 
-				return groupedEntries;
+				return groupedEntries.sort((a, b) => {
+					return b.entries[0].date.getTime() - a.entries[0].date.getTime();
+				});
 			});
 	}
 
