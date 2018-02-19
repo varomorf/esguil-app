@@ -43,6 +43,14 @@ export class EntryProvider {
 		});
 	}
 
+	public delete(entry: JournalEntry): Promise<void> {
+		if (entry.$key) {
+			return this.entriesRef.remove(entry.$key);
+		} else {
+			return Promise.resolve();
+		}
+	}
+
 	getGroupedEntries(): Observable<GroupedEntries[]> {
 		return this.getEntries()
 			.map(entries => {
@@ -74,7 +82,10 @@ export class EntryProvider {
 	private getEntries(): Observable<JournalEntry[]> {
 		return new Observable<JournalEntry[]>(subscriber => {
 			this.memberProvider.getMembers().subscribe(members => {
-				this.entriesRef.valueChanges()
+				this.entriesRef.snapshotChanges()
+					.map(changes => {
+						return changes.map(c => ({$key: c.payload.key, ...c.payload.val()}));
+					})
 					.map(entries => entries.map(e => JournalEntry.fromObject(e, members)))
 					.subscribe(e => subscriber.next(e));
 			});

@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import {Member} from "./member";
 
 export class FBJournalEntry {
+	$key: string;
 	groupId: string;
 	date: string;
 	concept: string;
@@ -24,6 +25,7 @@ export class FBJournalEntry {
 }
 
 export class JournalEntry {
+	$key: string;
 	groupId: string;
 	date: Date;
 	concept: string;
@@ -39,6 +41,7 @@ export class JournalEntry {
 	static fromObject(data: FBJournalEntry, members: Member[]): JournalEntry {
 		let journalEntry = new JournalEntry();
 
+		journalEntry.$key = data.$key;
 		journalEntry.groupId = data.groupId;
 		journalEntry.date = moment(data.date).toDate();
 		journalEntry.concept = data.concept;
