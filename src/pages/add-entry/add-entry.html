@@ -31,6 +31,10 @@
           <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
         </ion-select>
       </ion-item>
+		<ion-item>
+			<ion-label>Date</ion-label>
+			<ion-datetime displayFormat="DD/MM/YYYY" formControlName="date"></ion-datetime>
+		</ion-item>
       <button ion-button type="submit" [disabled]="!journalEntry.valid">Submit</button>
     </ion-list>
   </form>

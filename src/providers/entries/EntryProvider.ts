@@ -28,7 +28,6 @@ export class EntryProvider {
 	create(entry: FBJournalEntry): Promise<any> {
 		return new Promise<any>(resolve => {
 			entry.groupId = this.currentUser.groupId;
-			entry.date = moment().toISOString();
 
 			// if it's a common expense, the targets are all of the group's members
 			if (entry.commonExpense) {

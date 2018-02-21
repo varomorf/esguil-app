@@ -10,6 +10,7 @@ import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryVal
 import {SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {noop} from "rxjs/util/noop";
+import * as moment from "moment";
 
 @Component({
   selector: 'page-add-entry',
@@ -42,7 +43,8 @@ export class AddEntryPage {
       concept: ['', Validators.compose([Validators.required])],
       payers: ['', Validators.required],
       commonExpense: [true, Validators.nullValidator],
-      targets: ['', Validators.nullValidator]
+      targets: ['', Validators.nullValidator],
+		date: [moment().toISOString(), Validators.nullValidator]
     });
     this.journalEntry.validator = (formGroup: FormGroup) => {
       return NewEntryTargetsValidator.validEntryTargets(formGroup);
