@@ -1,73 +1,46 @@
-import {Component} from '@angular/core';
-import {AlertController, Events, NavController} from 'ionic-angular';
-import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
-import {FBJournalEntry, JournalEntry} from "../../model/journalEntry";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MemberProvider} from "../../providers/members/MemberProvider";
-import {Member} from "../../model/member";
-import {Observable} from "rxjs/Observable";
-import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryValidator";
-import {SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
+import {Component, ViewChild} from '@angular/core';
+import {AlertController} from 'ionic-angular';
+import {FBJournalEntry} from "../../model/journalEntry";
+import {FormGroup} from "@angular/forms";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {noop} from "rxjs/util/noop";
-import * as moment from "moment";
+import {EntryDataFormComponent} from "../../components/entry-data-form/entry-data-form";
 
 @Component({
-  selector: 'page-add-entry',
-  templateUrl: 'add-entry.html'
+	selector: 'page-add-entry',
+	templateUrl: 'add-entry.html'
 })
 export class AddEntryPage {
 
-  private journalEntry: FormGroup;
-  private entriesRef: AngularFireList<JournalEntry>;
-  private members: Observable<Member[]>;
+	@ViewChild(EntryDataFormComponent) entryDataForm: EntryDataFormComponent;
 
-  constructor(public navCtrl: NavController,
-              public alertCtrl: AlertController,
-              public db: AngularFireDatabase,
-              public formBuilder: FormBuilder,
-              private memberService: MemberProvider,
-              private entryProvider: EntryProvider,
-			  private events: Events) {
+	private formAction = (form: FormGroup) => this.createEntry(form);
 
-    this.entriesRef = db.list('entries');
-    this.initForm();
-	  this.events.subscribe(SIGNED_IN_USER, () => {
-    	this.members = this.memberService.getMembers();
-	  });
-  }
+	constructor(public alertCtrl: AlertController,
+				private entryProvider: EntryProvider) {
+	}
 
-  initForm() {
-    this.journalEntry = this.formBuilder.group({
-      amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
-      concept: ['', Validators.compose([Validators.required])],
-      payers: ['', Validators.required],
-      commonExpense: [true, Validators.nullValidator],
-      targets: ['', Validators.nullValidator],
-		date: [moment().toISOString(), Validators.nullValidator]
-    });
-    this.journalEntry.validator = (formGroup: FormGroup) => {
-      return NewEntryTargetsValidator.validEntryTargets(formGroup);
-    };
-  }
+	ionViewDidEnter(){
+		this.entryDataForm.initForm();
+	}
 
-  createEntry() {
-    this.entryProvider.create(FBJournalEntry.fromObject(this.journalEntry.value))
-      .then(() => {
-        let newEntryModal = this.alertCtrl.create({
-          title: 'New Entry Added',
-          message: "The new entry has been added",
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => this.initForm()
-            }
-          ]
-        });
-        newEntryModal.present(newEntryModal).then(noop);
-      });
+	createEntry(formGroup: FormGroup) {
+		this.entryProvider.create(FBJournalEntry.fromObject(formGroup.value))
+			.then(() => {
+				let newEntryModal = this.alertCtrl.create({
+					title: 'New Entry Added',
+					message: "The new entry has been added",
+					buttons: [
+						{
+							text: 'OK',
+							handler: () => this.entryDataForm.initForm()
+						}
+					]
+				});
+				newEntryModal.present(newEntryModal).then(noop);
+			});
 
 
-  }
+	}
 
 }

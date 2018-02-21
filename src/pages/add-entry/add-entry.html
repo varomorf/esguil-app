@@ -5,37 +5,5 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="journalEntry" (ngSubmit)="createEntry()">
-    <ion-list>
-      <ion-item>
-        <ion-label>Amount</ion-label>
-        <ion-input type="number" formControlName="amount"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Concept</ion-label>
-        <ion-input type="text" formControlName="concept"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Payer/s</ion-label>
-        <ion-select formControlName="payers" multiple="true">
-          <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Common-expense</ion-label>
-        <ion-checkbox id="commonExpense" formControlName="commonExpense"></ion-checkbox>
-      </ion-item>
-      <ion-item *ngIf="!journalEntry.value.commonExpense">
-        <ion-label>Target/s</ion-label>
-        <ion-select formControlName="targets" multiple="true">
-          <ion-option *ngFor="let member of members | async" [value]="member.$key">{{member.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-		<ion-item>
-			<ion-label>Date</ion-label>
-			<ion-datetime displayFormat="DD/MM/YYYY" formControlName="date"></ion-datetime>
-		</ion-item>
-      <button ion-button type="submit" [disabled]="!journalEntry.valid">Submit</button>
-    </ion-list>
-  </form>
+  <entry-data-form [button-action]="formAction"></entry-data-form>
 </ion-content>

@@ -21,6 +21,7 @@ import {registerLocaleData} from "@angular/common";
 import localeEs from '@angular/common/locales/es'
 import {TotalsPage} from "../pages/totals/totals";
 import {PipesModule} from "../pipes/pipes.module";
+import {ComponentsModule} from "../components/components.module";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -46,6 +47,7 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+	  ComponentsModule,
 	PipesModule
   ],
   bootstrap: [IonicApp],

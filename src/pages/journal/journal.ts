@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertController, NavController, ToastController} from 'ionic-angular';
+import {AlertController, ModalController, NavController, ToastController} from 'ionic-angular';
 import {GroupedEntries, JournalEntry} from "../../model/journalEntry";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
+import {AddEntryPage} from "../add-entry/add-entry";
 
 @Component({
 	selector: 'page-journal',
@@ -13,7 +14,8 @@ export class JournalPage {
 	constructor(public navCtrl: NavController,
 				private entryProvider: EntryProvider,
 				private alertCtrl: AlertController,
-				private toastCtrl: ToastController) {
+				private toastCtrl: ToastController,
+				private modalCtrl: ModalController) {
 	}
 
 	public ionViewDidLoad() {
@@ -27,6 +29,10 @@ export class JournalPage {
 				this.toastCtrl.create({message: 'Entry deleted correctly', duration: 1000}).present();
 			});
 		})
+	}
+
+	public editEntry(entry: JournalEntry) {
+		this.modalCtrl.create(AddEntryPage).present();
 	}
 
 	private presentConfirm(action: () => void) {
