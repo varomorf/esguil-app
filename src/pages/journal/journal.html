@@ -24,6 +24,9 @@
 					<ion-icon item-right *ngIf="!entry.commonExpense" name="person"></ion-icon>
 				</ion-item>
 				<ion-item-options side="right">
+					<button ion-button color="secondary" (click)="editEntry(entry)">
+						Edit
+					</button>
 					<button ion-button color="danger" (click)="removeEntry(entry)">
 						Delete
 					</button>

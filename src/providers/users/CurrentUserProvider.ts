@@ -24,7 +24,7 @@ export class CurrentUserProvider {
 
 		loading.present().then(noop);
 
-		this.fireAuth.auth.signInWithEmailAndPassword("varomorf@gmail.com", "123456")
+		this.fireAuth.auth.signInWithEmailAndPassword("foo@bar.com", "123456")
 			.then(user => {
 				this.currentUserRef = this.db.object<Member>('/members/' + user.uid);
 				this.currentUserRef.valueChanges()
