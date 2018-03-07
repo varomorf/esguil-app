@@ -22,6 +22,8 @@ import localeEs from '@angular/common/locales/es'
 import {TotalsPage} from "../pages/totals/totals";
 import {PipesModule} from "../pipes/pipes.module";
 import {ComponentsModule} from "../components/components.module";
+import {EditEntryPage} from "../pages/edit-entry/edit-entry";
+import {EditEntryPageModule} from "../pages/edit-entry/edit-entry.module";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -48,7 +50,8 @@ const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,
 	  ComponentsModule,
-	PipesModule
+	PipesModule,
+	  EditEntryPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,7 +60,8 @@ const firebaseConfig = {
     MembersPage,
     AddEntryPage,
     TabsPage,
-    TotalsPage
+    TotalsPage,
+	  EditEntryPage
   ],
   providers: [
     StatusBar,

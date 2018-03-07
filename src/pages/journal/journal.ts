@@ -3,6 +3,7 @@ import {AlertController, ModalController, NavController, ToastController} from '
 import {GroupedEntries, JournalEntry} from "../../model/journalEntry";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {AddEntryPage} from "../add-entry/add-entry";
+import {EditEntryPage} from "../edit-entry/edit-entry";
 
 @Component({
 	selector: 'page-journal',
@@ -32,7 +33,7 @@ export class JournalPage {
 	}
 
 	public editEntry(entry: JournalEntry) {
-		this.modalCtrl.create(AddEntryPage).present();
+		this.modalCtrl.create(EditEntryPage, {entry: entry}).present();
 	}
 
 	private presentConfirm(action: () => void) {
