@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {noop} from "rxjs/util/noop";
 import {FBJournalEntry, JournalEntry} from "../../model/journalEntry";
 import {FormGroup} from "@angular/forms";
@@ -24,7 +24,8 @@ export class EditEntryPage {
 
 	formAction = (form: FormGroup) => this.editEntry(form);
 
-	constructor(public alertCtrl: AlertController,
+	constructor(private viewCtrl: ViewController,
+				public alertCtrl: AlertController,
 				private entryProvider: EntryProvider) {
 	}
 
@@ -40,6 +41,7 @@ export class EditEntryPage {
 						}
 					]
 				});
+				newEntryModal.onDidDismiss(() => this.viewCtrl.dismiss());
 				newEntryModal.present(newEntryModal).then(noop);
 			});
 	}

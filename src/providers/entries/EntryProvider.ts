@@ -42,6 +42,23 @@ export class EntryProvider {
 		});
 	}
 
+	edit(entry: FBJournalEntry): Promise<any> {
+		return new Promise<any>(resolve => {
+			entry.groupId = this.currentUser.groupId;
+
+			// if it's a common expense, the targets are all of the group's members
+			if (entry.commonExpense) {
+				this.memberProvider.getMembers().subscribe(members => {
+					entry.targets = members.map(m => m.$key);
+
+					return this.entriesRef.push(entry).then(resolve);
+				});
+			} else {
+				return this.entriesRef.push(entry).then(resolve);
+			}
+		});
+	}
+
 	public delete(entry: JournalEntry): Promise<void> {
 		if (entry.$key) {
 			return this.entriesRef.remove(entry.$key);

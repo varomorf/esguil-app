@@ -14,6 +14,9 @@ export class CurrentUserProvider {
 	private currentUserRef: AngularFireObject<Member>;
 	private currentUser: Member;
 
+
+	public ready = false;
+
 	constructor(private db: AngularFireDatabase,
 				private fireAuth: AngularFireAuth,
 				private loadingController: LoadingController,
@@ -31,6 +34,7 @@ export class CurrentUserProvider {
 					.subscribe(user => {
 						this.currentUser = user;
 
+						this.ready = true;
 						this.events.publish(SIGNED_IN_USER, user);
 
 						loading.dismiss().then(noop);
