@@ -36,6 +36,8 @@ export class JournalEntry {
 
 	constructor() {
 		this.date = new Date();
+		this.payers = [];
+		this.targets = [];
 	}
 
 	static fromObject(data: FBJournalEntry, members: Member[]): JournalEntry {

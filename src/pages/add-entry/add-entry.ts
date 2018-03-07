@@ -21,7 +21,7 @@ export class AddEntryPage {
 	}
 
 	ionViewDidEnter(){
-		this.entryDataForm.initForm({} as JournalEntry);
+		this.entryDataForm.initForm(new JournalEntry());
 	}
 
 	createEntry(formGroup: FormGroup) {
@@ -33,7 +33,7 @@ export class AddEntryPage {
 					buttons: [
 						{
 							text: 'OK',
-							handler: () => this.entryDataForm.initForm({} as JournalEntry)
+							handler: () => this.entryDataForm.initForm(new JournalEntry())
 						}
 					]
 				});

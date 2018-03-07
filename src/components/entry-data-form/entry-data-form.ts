@@ -48,12 +48,12 @@ export class EntryDataFormComponent {
 
 	public initForm(initData: JournalEntry) {
 		this.journalEntry = this.formBuilder.group({
-			amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
-			concept: ['', Validators.compose([Validators.required])],
-			payers: ['', Validators.required],
-			commonExpense: [true, Validators.nullValidator],
-			targets: ['', Validators.nullValidator],
-			date: [moment().toISOString(), Validators.nullValidator]
+			amount: [initData.amount || '', Validators.compose([Validators.required, Validators.min(0.01)])],
+			concept: [initData.concept || '', Validators.compose([Validators.required])],
+			payers: [initData.payers.map(p => p.$key) || '', Validators.required],
+			commonExpense: [initData.commonExpense, Validators.nullValidator],
+			targets: [initData.targets.map(t => t.$key) || '', Validators.nullValidator],
+			date: [(moment(initData.date) || moment()).toISOString(), Validators.nullValidator]
 		});
 		this.journalEntry.validator = (formGroup: FormGroup) => {
 			return NewEntryTargetsValidator.validEntryTargets(formGroup);

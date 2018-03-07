@@ -28,10 +28,6 @@ export class EditEntryPage {
 				private entryProvider: EntryProvider) {
 	}
 
-	ionViewDidEnter(){
-		this.entryDataForm.initForm({} as JournalEntry);
-	}
-
 	editEntry(formGroup: FormGroup) {
 		this.entryProvider.edit(FBJournalEntry.fromObject(formGroup.value))
 			.then(() => {
