@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {AlertController} from 'ionic-angular';
-import {FBJournalEntry} from "../../model/journalEntry";
+import {FBJournalEntry, JournalEntry} from "../../model/journalEntry";
 import {FormGroup} from "@angular/forms";
 import {EntryProvider} from "../../providers/entries/EntryProvider";
 import {noop} from "rxjs/util/noop";
@@ -14,14 +14,14 @@ export class AddEntryPage {
 
 	@ViewChild(EntryDataFormComponent) entryDataForm: EntryDataFormComponent;
 
-	private formAction = (form: FormGroup) => this.createEntry(form);
+	formAction = (form: FormGroup) => this.createEntry(form);
 
 	constructor(public alertCtrl: AlertController,
 				private entryProvider: EntryProvider) {
 	}
 
 	ionViewDidEnter(){
-		this.entryDataForm.initForm();
+		this.entryDataForm.initForm({} as JournalEntry);
 	}
 
 	createEntry(formGroup: FormGroup) {
@@ -33,14 +33,12 @@ export class AddEntryPage {
 					buttons: [
 						{
 							text: 'OK',
-							handler: () => this.entryDataForm.initForm()
+							handler: () => this.entryDataForm.initForm({} as JournalEntry)
 						}
 					]
 				});
 				newEntryModal.present(newEntryModal).then(noop);
 			});
-
-
 	}
 
 }
