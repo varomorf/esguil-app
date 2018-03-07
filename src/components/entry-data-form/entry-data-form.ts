@@ -4,9 +4,10 @@ import {NewEntryTargetsValidator} from "../../app/entries/validators/newEntryVal
 import * as moment from "moment";
 import {Observable} from "rxjs/Observable";
 import {Member} from "../../model/member";
-import {SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
+import {CurrentUserProvider, SIGNED_IN_USER} from "../../providers/users/CurrentUserProvider";
 import {MemberProvider} from "../../providers/members/MemberProvider";
-import {Events} from "ionic-angular";
+import {Events, NavParams, ViewController} from "ionic-angular";
+import {JournalEntry} from "../../model/journalEntry";
 
 /**
  * Generated class for the EntryDataFormComponent component.
@@ -25,16 +26,27 @@ export class EntryDataFormComponent {
 
 	@Input('button-action') buttonAction: (FormGroup) => void;
 
-	constructor(private formBuilder: FormBuilder,
+	private getMembers = () => {
+		this.members = this.memberService.getMembers();
+	};
+
+	constructor(private viewCtrl: ViewController,
+				private navParams: NavParams,
+				private formBuilder: FormBuilder,
 				private memberService: MemberProvider,
+				private currentUser: CurrentUserProvider,
 				private events: Events) {
-		this.initForm();
-		this.events.subscribe(SIGNED_IN_USER, () => {
-			this.members = this.memberService.getMembers();
-		});
+		if (!this.currentUser.ready) {
+			this.events.subscribe(SIGNED_IN_USER, this.getMembers);
+		} else {
+			this.getMembers();
+		}
+
+		let entry = this.navParams.get('entry') || new JournalEntry();
+		this.initForm(entry);
 	}
 
-	public initForm() {
+	public initForm(initData: JournalEntry) {
 		this.journalEntry = this.formBuilder.group({
 			amount: ['', Validators.compose([Validators.required, Validators.min(0.01)])],
 			concept: ['', Validators.compose([Validators.required])],
