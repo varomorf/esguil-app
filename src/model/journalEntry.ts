@@ -30,7 +30,7 @@ export class JournalEntry {
 	date: Date;
 	concept: string;
 	amount: number;
-	commonExpense: boolean;
+	commonExpense: boolean = true;
 	payers: Member[];
 	targets: Member[];
 
