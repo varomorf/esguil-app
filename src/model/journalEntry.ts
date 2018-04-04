@@ -16,7 +16,7 @@ export class FBJournalEntry {
 
 		Object.assign(fb, data);
 
-		if(typeof data.amount === typeof ''){
+		if (typeof data.amount === typeof '') {
 			fb.amount = Number(data.amount);
 		}
 
@@ -49,12 +49,16 @@ export class JournalEntry {
 		journalEntry.concept = data.concept;
 		journalEntry.amount = Number(data.amount);
 		journalEntry.commonExpense = data.commonExpense;
-		journalEntry.targets = data.targets.map(t => {
-			return members.find(m => m.$key === t)
-		});
-		journalEntry.payers = data.payers.map(p => {
-			return members.find(m => m.$key === p)
-		});
+		if (data.targets) {
+			journalEntry.targets = data.targets.map(t => {
+				return members.find(m => m.$key === t)
+			});
+		}
+		if (data.payers) {
+			journalEntry.payers = data.payers.map(p => {
+				return members.find(m => m.$key === p)
+			});
+		}
 
 		return journalEntry;
 	}
