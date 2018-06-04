@@ -87,6 +87,9 @@ export class EntryProvider {
 					}
 
 					grouped.addEntry(entry);
+					grouped.entries.sort((a, b) => {
+						return a.date.getTime() - b.date.getTime();
+					});
 				});
 
 				return groupedEntries.sort((a, b) => {
