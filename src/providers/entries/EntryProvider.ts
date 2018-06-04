@@ -43,6 +43,12 @@ export class EntryProvider {
 	}
 
 	edit(entry: FBJournalEntry): Promise<any> {
+		let update = (e: FBJournalEntry, resolve) => {
+			const $key = e.$key;
+			delete e.$key;
+			return this.entriesRef.update($key, e).then(resolve);
+		};
+
 		return new Promise<any>(resolve => {
 			entry.groupId = this.currentUser.groupId;
 
@@ -51,10 +57,10 @@ export class EntryProvider {
 				this.memberProvider.getMembers().subscribe(members => {
 					entry.targets = members.map(m => m.$key);
 
-					return this.entriesRef.push(entry).then(resolve);
+					return update(entry, resolve);
 				});
 			} else {
-				return this.entriesRef.push(entry).then(resolve);
+				return update(entry, resolve);
 			}
 		});
 	}

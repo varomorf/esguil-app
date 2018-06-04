@@ -48,6 +48,7 @@ export class EntryDataFormComponent {
 
 	public initForm(initData: JournalEntry) {
 		this.journalEntry = this.formBuilder.group({
+			$key: [initData.$key, Validators.nullValidator],
 			amount: [initData.amount || '', Validators.compose([Validators.required, Validators.min(0.01)])],
 			concept: [initData.concept || '', Validators.compose([Validators.required])],
 			payers: [initData.payers.map(p => p.$key) || '', Validators.required],
