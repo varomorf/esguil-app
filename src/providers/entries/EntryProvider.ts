@@ -27,6 +27,7 @@ export class EntryProvider {
 
 	create(entry: FBJournalEntry): Promise<any> {
 		return new Promise<any>(resolve => {
+			delete entry.$key;
 			entry.groupId = this.currentUser.groupId;
 
 			// if it's a common expense, the targets are all of the group's members
