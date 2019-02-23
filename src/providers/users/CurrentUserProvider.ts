@@ -5,8 +5,9 @@ import {AngularFireAuth} from "angularfire2/auth";
 import {Events, LoadingController} from "ionic-angular";
 import {noop} from "rxjs/util/noop";
 import {Observable} from "rxjs/Observable";
+import {Storage} from "@ionic/storage";
 
-export const SIGNED_IN_USER = 'SIGNED_IN_USER'
+export const SIGNED_IN_USER = 'SIGNED_IN_USER';
 
 @Injectable()
 export class CurrentUserProvider {
@@ -20,7 +21,8 @@ export class CurrentUserProvider {
 	constructor(private db: AngularFireDatabase,
 				private fireAuth: AngularFireAuth,
 				private loadingController: LoadingController,
-				private events: Events) {
+				private events: Events,
+				private storage: Storage) {
 	}
 
 	public loginUser(username: string, password: string): Observable<boolean> {
@@ -33,6 +35,9 @@ export class CurrentUserProvider {
 
 			this.fireAuth.auth.signInWithEmailAndPassword(username, password)
 				.then(user => {
+					//save login credentials for re-logins
+					this.storage.set('credentials', {username: username, password: password});
+
 					this.currentUserRef = this.db.object<Member>('/members/' + user.uid);
 					this.currentUserRef.valueChanges()
 						.subscribe(user => {
