@@ -26,6 +26,7 @@ import {EditEntryPage} from "../pages/edit-entry/edit-entry";
 import {EditEntryPageModule} from "../pages/edit-entry/edit-entry.module";
 import {LoginPage} from "../pages/login/login";
 import {IonicStorageModule} from "@ionic/storage";
+import {LoginPageModule} from "../pages/login/login.module";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -43,8 +44,7 @@ const firebaseConfig = {
     MembersPage,
     AddEntryPage,
     TabsPage,
-	TotalsPage,
-	  LoginPage
+	TotalsPage
   ],
   imports: [
     BrowserModule,
@@ -55,6 +55,7 @@ const firebaseConfig = {
 	  ComponentsModule,
 	PipesModule,
 	  EditEntryPageModule,
+	  LoginPageModule,
 	  IonicStorageModule.forRoot({
 		  name: '__mydb',
 		  driverOrder: ['indexeddb', 'sqlite', 'websql']
