@@ -24,6 +24,7 @@ import {PipesModule} from "../pipes/pipes.module";
 import {ComponentsModule} from "../components/components.module";
 import {EditEntryPage} from "../pages/edit-entry/edit-entry";
 import {EditEntryPageModule} from "../pages/edit-entry/edit-entry.module";
+import {LoginPage} from "../pages/login/login";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -41,7 +42,8 @@ const firebaseConfig = {
     MembersPage,
     AddEntryPage,
     TabsPage,
-	TotalsPage
+	TotalsPage,
+	  LoginPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ const firebaseConfig = {
     AddEntryPage,
     TabsPage,
     TotalsPage,
-	  EditEntryPage
+	  EditEntryPage,
+	  LoginPage
   ],
   providers: [
     StatusBar,

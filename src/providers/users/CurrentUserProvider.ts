@@ -21,25 +21,32 @@ export class CurrentUserProvider {
 				private fireAuth: AngularFireAuth,
 				private loadingController: LoadingController,
 				private events: Events) {
+	}
+
+	public loginUser(username: string, password: string): Observable<boolean> {
 		let loading = this.loadingController.create({
 			content: 'Signing in'
 		});
 
-		loading.present().then(noop);
+		return Observable.create(observer => {
+			loading.present().then(noop);
 
-		this.fireAuth.auth.signInWithEmailAndPassword("varomorf@gmail.com", "123456")
-			.then(user => {
-				this.currentUserRef = this.db.object<Member>('/members/' + user.uid);
-				this.currentUserRef.valueChanges()
-					.subscribe(user => {
-						this.currentUser = user;
+			this.fireAuth.auth.signInWithEmailAndPassword(username, password)
+				.then(user => {
+					this.currentUserRef = this.db.object<Member>('/members/' + user.uid);
+					this.currentUserRef.valueChanges()
+						.subscribe(user => {
+							this.currentUser = user;
 
-						this.ready = true;
-						this.events.publish(SIGNED_IN_USER, user);
+							this.ready = true;
+							this.events.publish(SIGNED_IN_USER, user);
 
-						loading.dismiss().then(noop);
-					});
-			});
+							loading.dismiss().then(noop);
+
+							observer.next(true);
+						});
+				});
+		});
 	}
 
 	public getCurrentUser(): Observable<Member> {
