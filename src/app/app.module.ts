@@ -25,6 +25,7 @@ import {ComponentsModule} from "../components/components.module";
 import {EditEntryPage} from "../pages/edit-entry/edit-entry";
 import {EditEntryPageModule} from "../pages/edit-entry/edit-entry.module";
 import {LoginPage} from "../pages/login/login";
+import {IonicStorageModule} from "@ionic/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChRFej31HhtKjvrnCF3zeX6T-M2LLxSps",
@@ -53,7 +54,11 @@ const firebaseConfig = {
     AngularFireAuthModule,
 	  ComponentsModule,
 	PipesModule,
-	  EditEntryPageModule
+	  EditEntryPageModule,
+	  IonicStorageModule.forRoot({
+		  name: '__mydb',
+		  driverOrder: ['indexeddb', 'sqlite', 'websql']
+	  })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
